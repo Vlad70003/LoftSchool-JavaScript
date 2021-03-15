@@ -45,23 +45,16 @@ map([1, 2, 3], (el) => el ** 2);
    Пример:
      reduce([1, 2, 3], (all, current) => all + current) // 6
    */
-function reduce(array, fn, initial) {
-  let returnInitial = initial || array[0];
-  let i;
-
-  if (initial) {
-    i = 0;
-  } else {
-    i = 1;
-  }
-
-  for (i; i < array.length; i++) {
-    returnInitial = fn(returnInitial, array[i], i, array);
-  }
-  return returnInitial;
-}
-
-reduce([1, 2, 3], (all, current) => all + current);
+     function reduce(array, fn, initial) {
+      let returnInitial = initial || array[0];
+    
+      for (let i = initial ? 0 : 1; i < array.length; i++) {
+        returnInitial = fn(returnInitial, array[i], i, array);
+      }
+      return returnInitial;
+    }
+    
+    reduce([1, 2, 3], (all, current) => all + current);
 
 /*
    Задание 4:
