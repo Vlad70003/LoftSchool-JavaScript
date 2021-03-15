@@ -17,31 +17,22 @@
    isAllTrue([100, 2, 3, 4, 5], n => n < 10) // вернет false
  */
    function isAllTrue(array, fn) {
-    let filterArray = [];
-  
+
     if (!Array.isArray(array) || array.length == 0) {
       throw new Error("empty array");
     } else if (typeof fn !== 'function') {
       throw new Error("fn is not a function");
-    } else {
-      for (let i = 0; i < array.length; i++) {
-        let number = fn(array[i]);
-  
-        if (number === true) {
-          filterArray.push(number);
-        }
-      }
-  
-      if (array.length > filterArray.length) {
+    }
+    for (let i = 0; i < array.length; i++) {
+      if (fn(array[i]) === false){
         return false;
-      } else {
-        return true;
       }
     }
+    return true;
   }
   
   try {
-    isAllTrue([100, 2, 3, 4, 5], n => n < 10);
+    isAllTrue([1, 2, 3, 4, 5], n => n < 10);
   } catch (e) {
     console.log(e.message);
   }
@@ -63,32 +54,24 @@
    isSomeTrue([1, 2, 3, 4, 5], n => n > 20) // вернет false
  */
    function isSomeTrue(array, fn) {
-    let filterArray = [];
-  
+
     if (!Array.isArray(array) || array.length == 0) {
       throw new Error("empty array");
     } else if (typeof fn !== 'function') {
       throw new Error("fn is not a function");
-    } else {
-      for (let i = 0; i < array.length; i++) {
-        let number = fn(array[i]);
-  
-        if (number === true) {
-          filterArray.push(number);
-        }
-      }
-  
-      if (filterArray.length > 0) {
-        return true;
-      } else {
-        return false;
-      }
     }
+ 
+    for (let i = 0; i < array.length; i++) {
+       if(fn(array[i]) == true){
+         return true;
+       }
+    }
+    return false;
   }
-  
+ 
   try {
-  isSomeTrue([1, 2, 30, 4, 5], n => n > 20);
-  isSomeTrue([1, 2, 3, 4, 5], n => n > 20);
+ isSomeTrue([1, 2, 191, 4, 5], n => n > 20);
+ 
   } catch (e) {
     console.log(e.message);
   }
@@ -109,29 +92,28 @@
 
     if (typeof fn !== 'function') {
       throw new Error('fn is not a function');
-    } else {
-      let returnArgs = [];
+    }
   
-      for (let i = 0; i < args.length; i++) {
-        
-        try{
-          fn(args[i]);
-        }catch(e){
-          returnArgs.push(args[i]);
+    let returnArray = [];
+    
+    for (let i = 0; i < args.length; i++) {
+      try {
+        if(fn(args[i])){
+          throw new Error();
         }
+      } catch (e) {
+         returnArray.push(args[i]);
       }
   
-      return returnArgs;
-  
     }
+      return returnArray;
   }
   
-  
-  try{
-  returnBadArguments(e => e > 10, 2, 3, 4, 21, 11);
-  } catch(e){
-    console.log(e.message);
-  }
+    try {
+      console.log(returnBadArguments(e => e > 10, 2, 3, 4, 21, 11));
+    } catch (e) {
+      console.log(e.message);
+    }
 
 /*
  Задание 4:
@@ -192,6 +174,9 @@
   } catch (e) {
     console.log(e.message);
   }
+
+  
+
 
 /* При решении задач, постарайтесь использовать отладчик */
 
