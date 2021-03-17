@@ -11,7 +11,8 @@
    createDivWithText('loftschool') // создаст элемент div, поместит в него 'loftschool' и вернет созданный элемент
  */
 function createDivWithText(text) {
-    let div = document.createElement('div').textContent = text;
+    let div = document.createElement("DIV");
+    div.textContent = text;
     return div;
 }
 
@@ -75,13 +76,13 @@ function findAllPSiblings(where) {
    findError(document.body) // функция должна вернуть массив с элементами 'привет' и 'loftschool'
  */
 function findError(where) {
-  const result = [];
-
-  for (const child of where.childNodes) {
-    result.push(child.textContent);
-  }
-
-  return result;
+  let result = [];
+  for (let i = 0; i < where.childNodes.length; i++) {
+    if (where.childNodes[i].nodeType === 1) {
+        result.push(where.childNodes[i].textContent);
+    }
+}
+return result;
 }
 
 /*
@@ -96,7 +97,13 @@ function findError(where) {
    После выполнения функции, дерево <div></div>привет<p></p>loftchool!!!
    должно быть преобразовано в <div></div><p></p>
  */
-function deleteTextNodes(where) {}
+   function deleteTextNodes(where) {
+    for( let children of where.childNodes){
+      if(children.nodeType === 3){
+        children.remove();
+      }			
+    }
+  }
 
 /*
  Задание 6:
@@ -109,7 +116,19 @@ function deleteTextNodes(where) {}
    После выполнения функции, дерево <span> <div> <b>привет</b> </div> <p>loftchool</p> !!!</span>
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
-function deleteTextNodesRecursive(where) {}
+   function deleteTextNodesRecursive(where) {
+    let child = where.childNodes;
+  
+        for (let i = 0; i < child.length; i++) {
+         
+            if(child[i].nodeType === 3){
+        child[i].remove();
+        i--;
+      }else if (child[i].nodeType === 1){
+        deleteTextNodesRecursive(child[i]);
+      }
+        }
+  }
 
 /*
  Задание 7 *:
