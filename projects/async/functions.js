@@ -8,7 +8,14 @@
  Пример:
    delayPromise(3) // вернет promise, который будет разрешен через 3 секунды
  */
-function delayPromise(seconds) {}
+   function delayPromise(seconds) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, seconds * 1000)
+    })
+  }
+  delayPromise(3);
 
 /*
  Задание 2:
@@ -23,6 +30,33 @@ function delayPromise(seconds) {}
  Пример:
    loadAndSortTowns().then(towns => console.log(towns)) // должна вывести в консоль отсортированный массив городов
  */
-function loadAndSortTowns() {}
+   function loadAndSortTowns() {
+
+    return new Promise((resolve) => {
+      let xhr = new XMLHttpRequest();
+  
+      xhr.open('GET', 'https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json');
+  
+      xhr.responseType = 'json';
+  
+      xhr.send();
+    
+      
+  
+      xhr.onload = function() {
+        let responseObj = xhr.response;
+        let city = [];
+        for (let i = 0; i < responseObj.length; i++) {
+          city.push(responseObj[i].name);
+        }
+        let filterCity = city.sort( (a, b) => a > b ? 1 : -1);
+        
+        resolve(filterCity);
+      };
+    })
+  
+  }
+  
+  loadAndSortTowns().then(towns => console.log(towns));
 
 export { delayPromise, loadAndSortTowns };
