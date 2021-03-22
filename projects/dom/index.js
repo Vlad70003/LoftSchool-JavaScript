@@ -47,13 +47,12 @@ function prepend(what, where) {
 
    findAllPSiblings(document.body) // функция должна вернуть массив с элементами div и span т.к. следующим соседом этих элементов является элемент с тегом P
  */
-function findAllPSiblings(where) {
-    let children = where.children;
+   function findAllPSiblings(where) {
+    let tagFindP = where.querySelectorAll('p');
     let returnArr = [];
-    for (let i = 0; i < children.length; i++){
-        if (children[i].tagName == 'P'){
-            returnArr.push(children[i].previousElementSibling);
-        }
+    
+    for(let element of tagFindP){
+    	returnArr.push(element.previousElementSibling);
     }
     return returnArr;
 }
@@ -119,15 +118,15 @@ return result;
    function deleteTextNodesRecursive(where) {
     let child = where.childNodes;
   
-        for (let i = 0; i < child.length; i++) {
-         
-            if(child[i].nodeType === 3){
+    for (let i = 0; i < child.length; i++) {
+  
+      if (child[i].nodeType === 3) {
         child[i].remove();
         i--;
-      }else if (child[i].nodeType === 1){
+      } else if (child[i].nodeType === 1) {
         deleteTextNodesRecursive(child[i]);
       }
-        }
+    }
   }
 
 /*
@@ -150,7 +149,48 @@ return result;
      texts: 3
    }
  */
-function collectDOMStat(root) {}
+   function collectDOMStat(root) {
+    let returmObj = {
+         tags: {},
+         classes: {},
+         texts: 0,
+       }
+    
+      function calculator(root){
+        for( let children of root.childNodes){
+          if(children.nodeType === 3){
+            returmObj.texts++;
+          }else if(children.nodeType === 1){
+            
+            if(children.tagName in returmObj.tags){
+              returmObj.tags[children.tagName]++
+            } else {
+              returmObj.tags[children.tagName] = 1;
+            }
+            
+            for (let classes of children.classList){
+              if(classes in returmObj.classes){
+                returmObj.classes[classes]++;
+              } else {
+                returmObj.classes[classes] = 1;
+              }
+            }
+            
+          }
+          calculator(children);
+        }
+      }
+    
+    
+    
+    
+    calculator(root);
+    
+    
+    
+    return returmObj;
+      
+    }
 
 /*
  Задание 8 *:
