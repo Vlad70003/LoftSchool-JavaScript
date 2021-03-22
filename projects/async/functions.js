@@ -30,7 +30,19 @@
  Пример:
    loadAndSortTowns().then(towns => console.log(towns)) // должна вывести в консоль отсортированный массив городов
  */
-   function loadAndSortTowns() {
+
+
+  //  function loadAndSortTowns() {
+
+  //   return fetch('https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json')
+  //   .then((resolve) => resolve.json())
+  //   .then((resolve) => resolve.sort((a, b) => a.name > b.name ? 1 : -1));
+  
+  // }
+  
+  // loadAndSortTowns().then(towns => console.log(towns));
+
+  function loadAndSortTowns() {
 
     return new Promise((resolve) => {
       let xhr = new XMLHttpRequest();
@@ -45,11 +57,8 @@
   
       xhr.onload = function() {
         let responseObj = xhr.response;
-        let city = [];
-        for (let i = 0; i < responseObj.length; i++) {
-          city.push(responseObj[i].name);
-        }
-        let filterCity = city.sort( (a, b) => a > b ? 1 : -1);
+
+        let filterCity = responseObj.sort( (a, b) => a.name > b.name ? 1 : -1);
         
         resolve(filterCity);
       };
@@ -58,5 +67,6 @@
   }
   
   loadAndSortTowns().then(towns => console.log(towns));
+ 
 
 export { delayPromise, loadAndSortTowns };
