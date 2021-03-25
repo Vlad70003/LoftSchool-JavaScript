@@ -17,22 +17,24 @@
  */
 import './dnd.html';
 
-const homeworkContainer = document.querySelector('#app');
+let homeworkContainer = document.querySelector('#app');
 
 homeworkContainer.onmousedown = function(event) {
 
-  let shiftX = event.clientX - homeworkContainer.getBoundingClientRect().left;
-  let shiftY = event.clientY - homeworkContainer.getBoundingClientRect().top;
+  let target = event.target;
 
-  homeworkContainer.style.position = 'absolute';
-  homeworkContainer.style.zIndex = 1000;
-  document.body.append(homeworkContainer);
+  let shiftX = event.clientX - target.getBoundingClientRect().left;
+  let shiftY = event.clientY - target.getBoundingClientRect().top;
+
+  target.style.position = 'absolute';
+  target.style.zIndex = 1000;
+  document.body.append(target);
 
   moveAt(event.pageX, event.pageY);
 
   function moveAt(pageX, pageY) {
-    homeworkContainer.style.left = pageX - shiftX + 'px';
-    homeworkContainer.style.top = pageY - shiftY + 'px';
+    target.style.left = pageX - shiftX + 'px';
+    target.style.top = pageY - shiftY + 'px';
   }
 
   function onMouseMove(event) {
@@ -41,11 +43,11 @@ homeworkContainer.onmousedown = function(event) {
 
   document.addEventListener('mousemove', onMouseMove);
 
-  homeworkContainer.onmouseup = function() {
+  target.onmouseup = function() {
     document.removeEventListener('mousemove', onMouseMove);
-    homeworkContainer.onmouseup = null;
+    target.onmouseup = null;
   };
-  homeworkContainer.ondragstart = function() {
+  target.ondragstart = function() {
   return false;
 };
 
@@ -63,6 +65,9 @@ export function createDiv() {
   div.style.background = `rgb(${getRandom(0, 255)}, ${getRandom(0, 255)}, ${getRandom(0, 255)})`;
   div.style.right = `${getRandom(0, 100)}%`;
 	div.style.top = `${getRandom(0, 100)}%`;
+  div.style.display = "block";
+  div.style.width = "100px";
+  div.style.height = "100px";
 
 
   return div;
@@ -71,7 +76,7 @@ export function createDiv() {
 const addDivButton = homeworkContainer.querySelector('#addDiv');
 
 addDivButton.addEventListener('click', e => {
-  console.log("text");
+
   let div = createDiv();
   homeworkContainer.appendChild(div);
 });
