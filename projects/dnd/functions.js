@@ -49,7 +49,8 @@
    emulateClick(document.querySelector('a')) // для указанного элемента должно быть симулировано события click
  */
    function emulateClick(target) {
-    target.click();
+    let event = new Event('click');
+    target.dispatchEvent(event);
   }
 
 /*
@@ -62,19 +63,19 @@
    delegate(document.body, () => console.log('кликнули на button')) // добавит такой обработчик кликов для body, который будет вызывать указанную функцию только если кликнули на кнопку (элемент с тегом button)
  */
    function delegate(target, fn) {
-	
+   
     let event = fn;
     
     target.addEventListener('click', fn => {
       fn.preventDefault();
       let target = fn.target;
-      if(target == document.querySelector('button')){
+      if(target.tagName == 'BUTTON'){
         return event();
       }
     })
   }
   
-  delegate(document.body, () => console.log('кликнули на button')) 
+  delegate(document.body, () => console.log('кликнули на button'));
 
 /*
  Задание 7:
@@ -87,10 +88,8 @@
  */
    function once(target, fn) {
 
-    target.addEventListener('click', e => {
-      e.preventDefault();
-      return fn();
-    }, {once: true});
+    target.addEventListener('click', fn,
+    {once: true});
   }
   
   once(document.querySelector('button'), () => console.log('обработчик выполнился!'));
