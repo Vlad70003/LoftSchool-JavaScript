@@ -19,7 +19,23 @@ import './dnd.html';
 
 let homeworkContainer = document.querySelector('#app');
 
-homeworkContainer.onmousedown = function(event) {
+export function createDiv() {
+  let div = document.createElement("div");
+  div.classList.add("draggable-div");
+  div.textContent = "TEXT";
+
+  function getRandom(min, max) {
+    return Math.ceil(Math.random() * (max - min) + min);
+  }
+  
+  div.style.background = `rgb(${getRandom(0, 255)}, ${getRandom(0, 255)}, ${getRandom(0, 255)})`;
+  div.style.right = `${getRandom(0, 100)}%`;
+	div.style.top = `${getRandom(0, 100)}%`;
+  div.style.display = "block";
+  div.style.width = `${getRandom(0, 100)}px`;
+  div.style.height = `${getRandom(0, 100)}px`;
+  
+  div.onmousedown = function(event) {
 
   let target = event.target;
 
@@ -29,8 +45,6 @@ homeworkContainer.onmousedown = function(event) {
   target.style.position = 'absolute';
   target.style.zIndex = 1000;
   document.body.append(target);
-
-  moveAt(event.pageX, event.pageY);
 
   function moveAt(pageX, pageY) {
     target.style.left = pageX - shiftX + 'px';
@@ -52,23 +66,6 @@ homeworkContainer.onmousedown = function(event) {
 };
 
 };
-
-export function createDiv() {
-  let div = document.createElement("div");
-  div.classList.add("draggable-div");
-  div.textContent = "TEXT";
-
-  function getRandom(min, max) {
-    return Math.ceil(Math.random() * (max - min) + min);
-  }
-  
-  div.style.background = `rgb(${getRandom(0, 255)}, ${getRandom(0, 255)}, ${getRandom(0, 255)})`;
-  div.style.right = `${getRandom(0, 100)}%`;
-	div.style.top = `${getRandom(0, 100)}%`;
-  div.style.display = "block";
-  div.style.width = "100px";
-  div.style.height = "100px";
-
 
   return div;
 }
