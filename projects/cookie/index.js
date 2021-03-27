@@ -1,15 +1,6 @@
 /*
  ДЗ 7 - Создать редактор cookie с возможностью фильтрации
 
- 7.1: На странице должна быть таблица со списком имеющихся cookie. Таблица должна иметь следующие столбцы:
-   - имя
-   - значение
-   - удалить (при нажатии на кнопку, выбранная cookie удаляется из браузера и таблицы)
-
- 7.2: На странице должна быть форма для добавления новой cookie. Форма должна содержать следующие поля:
-   - имя
-   - значение
-   - добавить (при нажатии на кнопку, в браузер и таблицу добавляется новая cookie с указанным именем и значением)
 
  Если добавляется cookie с именем уже существующей cookie, то ее значение в браузере и таблице должно быть обновлено
 
@@ -33,20 +24,61 @@ import './cookie.html';
    const newDiv = document.createElement('div');
    homeworkContainer.appendChild(newDiv);
  */
-const homeworkContainer = document.querySelector('#app');
-// текстовое поле для фильтрации cookie
-const filterNameInput = homeworkContainer.querySelector('#filter-name-input');
-// текстовое поле с именем cookie
-const addNameInput = homeworkContainer.querySelector('#add-name-input');
-// текстовое поле со значением cookie
-const addValueInput = homeworkContainer.querySelector('#add-value-input');
-// кнопка "добавить cookie"
-const addButton = homeworkContainer.querySelector('#add-button');
-// таблица со списком cookie
-const listTable = homeworkContainer.querySelector('#list-table tbody');
+   const homeworkContainer = document.querySelector('#app');
+   const filterNameInput = homeworkContainer.querySelector('#filter-name-input');
+   const addNameInput = homeworkContainer.querySelector('#add-name-input');
+   const addValueInput = homeworkContainer.querySelector('#add-value-input');
+   const addButton = homeworkContainer.querySelector('#add-button');
+   const listTable = homeworkContainer.querySelector('#list-table tbody');
+   const nameId = document.querySelector("#tbody__item-name");
+
+   function createTable(name, value) {
+    let table = document.createElement("tr");
+    table.classList.add("tbody__item")
+    let nameValue = document.createElement("th");
+    nameValue.id = 'tbody__item-name';
+    let valueValue = document.createElement("th");
+    valueValue.classList.add("tbody__item-value")
+    let delValue = document.createElement("th");
+    delValue.classList.add("deleteTable");
+    nameValue.textContent = name;
+    valueValue.textContent = value;
+    delValue.textContent = "Удалить";
+  
+    table.append(nameValue);
+    table.append(valueValue);
+    table.append(delValue);
+  
+    return table;
+  }
 
 filterNameInput.addEventListener('input', function () {});
 
-addButton.addEventListener('click', () => {});
+addButton.addEventListener('click', (event) => {
+  event.preventDefault();
+  let name = addNameInput.value;
+  let value = addValueInput.value;
 
-listTable.addEventListener('click', (e) => {});
+
+  if (name.length > 0 && value.length > 0) {
+    document.cookie = `${name} = ${value}`
+    let tbody = createTable(name, value);
+    listTable.appendChild(tbody);
+    addNameInput.value = "";
+    addValueInput.value = "";
+    console.log(nameId)
+  }
+
+});
+
+listTable.addEventListener('click', (event) => {
+  event.preventDefault();
+  let target = event.target;
+  let targetClosest = target.closest('tr');
+  if (target.className == "deleteTable") {
+    targetClosest.remove();
+  }
+
+})
+
+
