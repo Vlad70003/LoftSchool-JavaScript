@@ -63,14 +63,6 @@ filterNameInput.addEventListener('input', function () {});
 addButton.addEventListener('click', (event) => {
   event.preventDefault();
 
-  let cookies = document.cookie
-  .split("; ")
-  .reduce((prev, current) => {
-    let [name, value] = current.split("=");
-    prev[name] = value;
-    return prev;
-  }, {});
-
 
   let name = addNameInput.value;
   let value = addValueInput.value;
@@ -83,13 +75,12 @@ addButton.addEventListener('click', (event) => {
     for (let elements of nameId) {
       if (elements.textContent == addNameInput.value) {
         elements.nextElementSibling.textContent = addValueInput.value;
-        cookies[elements.textContent] = addValueInput.value;
+        document.cookie = `${name} = ${value}`;
         addNameInput.value = "";
         addValueInput.value = "";
         return;
       }
     }
-    console.log(cookies);
     listTable.appendChild(tbody);
     document.cookie = `${name} = ${value}`;
     
@@ -106,10 +97,17 @@ addButton.addEventListener('click', (event) => {
 listTable.addEventListener('click', (event) => {
   event.preventDefault();
   let target = event.target;
+  let nameDel = target.closest(".tbody__item").firstChild;
+
+
+
   let targetClosest = target.closest('tr');
   if (target.className == "deleteTable") {
-    targetClosest.remove();  
+    targetClosest.remove(); 
+    function cookies(name) {
+      document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+    cookies(nameDel.textContent);
   }
-
 })
 
