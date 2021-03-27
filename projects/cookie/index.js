@@ -32,28 +32,46 @@ import './cookie.html';
    const listTable = homeworkContainer.querySelector('#list-table tbody');
    const nameId = document.querySelector("#tbody__item-name");
 
-   function createTable(name, value) {
-    let table = document.createElement("tr");
-    table.classList.add("tbody__item")
-    let nameValue = document.createElement("th");
-    nameValue.id = 'tbody__item-name';
-    let valueValue = document.createElement("th");
-    valueValue.classList.add("tbody__item-value")
-    let delValue = document.createElement("th");
-    delValue.classList.add("deleteTable");
-    nameValue.textContent = name;
-    valueValue.textContent = value;
-    delValue.textContent = "Удалить";
+   ///// Создает и возвращает строку с ячейками, значения которых берутся из ячеек
+function createTable(name, value) {
+  let table = document.createElement("tr");
+  table.classList.add("tbody__item")
+  let nameValue = document.createElement("th");
+  nameValue.id = 'tbody__item-name';
+  let valueValue = document.createElement("th");
+  valueValue.classList.add("tbody__item-value")
+  let delValue = document.createElement("th");
+  delValue.classList.add("deleteTable");
+  nameValue.textContent = name;
+  valueValue.textContent = value;
+  delValue.textContent = "Удалить";
+
+  table.append(nameValue);
+  table.append(valueValue);
+  table.append(delValue);
+
+  return table;
+}
+
+///Ищет ячейки из столбца, который соответствует имени. Если такое имя есть - меняет его значение на введеное.
+function seachName() {
+  let nameArr = [];
+  let nameId = document.querySelectorAll("#tbody__item-name");
   
-    table.append(nameValue);
-    table.append(valueValue);
-    table.append(delValue);
+  nameId.forEach(function(userItem) {
+    nameArr.push(userItem);
+  });
   
-    return table;
-  }
+  nameArr.forEach(element => {
+    if (element.textContent == addNameInput.value) {
+      element.nextElementSibling.textContent = addValueInput.value;
+    }
+  })
+}
 
 filterNameInput.addEventListener('input', function () {});
 
+/// Клик по "Добавить cookie"
 addButton.addEventListener('click', (event) => {
   event.preventDefault();
   let name = addNameInput.value;
@@ -61,16 +79,23 @@ addButton.addEventListener('click', (event) => {
 
 
   if (name.length > 0 && value.length > 0) {
-    document.cookie = `${name} = ${value}`
     let tbody = createTable(name, value);
+
+    document.cookie = `${name} = ${value}`
     listTable.appendChild(tbody);
+
+    seachName();
+    
+
     addNameInput.value = "";
     addValueInput.value = "";
-    console.log(nameId)
+
+
   }
 
 });
 
+/// Клик по ячейке "Удалить"
 listTable.addEventListener('click', (event) => {
   event.preventDefault();
   let target = event.target;
@@ -80,5 +105,3 @@ listTable.addEventListener('click', (event) => {
   }
 
 })
-
-
