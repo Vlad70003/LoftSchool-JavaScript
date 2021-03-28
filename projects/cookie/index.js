@@ -30,7 +30,6 @@ import './cookie.html';
    const addValueInput = homeworkContainer.querySelector('#add-value-input');
    const addButton = homeworkContainer.querySelector('#add-button');
    const listTable = homeworkContainer.querySelector('#list-table tbody');
-   const nameId = document.querySelector("#tbody__item-name");
 
 
    ///// Создает и возвращает строку с ячейками, значения которых берутся из ячеек
@@ -46,7 +45,7 @@ import './cookie.html';
     nameValue.textContent = name;
     valueValue.textContent = value;
     delValue.textContent = "Удалить";
-  
+    
     table.append(nameValue);
     table.append(valueValue);
     table.append(delValue);
@@ -57,7 +56,25 @@ import './cookie.html';
 ///Ищет ячейки из столбца, который соответствует имени. Если такое имя есть - меняет его значение на введеное.
 
 
-filterNameInput.addEventListener('input', function () {});
+filterNameInput.addEventListener('input', function (event) {
+  let filterValue = this.value.toLowerCase();
+  let nameId = document.querySelectorAll("#tbody__item-name");
+  
+
+  for( let text of nameId){
+      if(!text.textContent.includes(filterValue.toLowerCase())){
+        let nameNone = text.closest(".tbody__item");
+        nameNone.style.display = "none";
+        
+      }else if(text.textContent.includes(filterValue.toLowerCase())){
+        let nameNone = text.closest(".tbody__item");
+        nameNone.style.display = "table-row";
+      }
+      
+  }
+  
+
+});
 
 /// Клик по "Добавить cookie"
 addButton.addEventListener('click', (event) => {
@@ -98,8 +115,6 @@ listTable.addEventListener('click', (event) => {
   event.preventDefault();
   let target = event.target;
   let nameDel = target.closest(".tbody__item").firstChild;
-
-
 
   let targetClosest = target.closest('tr');
   if (target.className == "deleteTable") {
