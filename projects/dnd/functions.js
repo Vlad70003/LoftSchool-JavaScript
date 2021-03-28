@@ -86,12 +86,21 @@
  Пример:
    once(document.querySelector('button'), () => console.log('обработчик выполнился!')) // добавит такой обработчик кликов для указанного элемента, который вызовется только один раз и затем удалится
  */
-   function once(target, fn) {
+  //  function once(target, fn) {
 
-    target.addEventListener('click', fn,
-    {once: true});
-  }
+  //   target.addEventListener('click', fn,
+  //   {once: true});
+  // }
   
-  once(document.querySelector('button'), () => console.log('обработчик выполнился!'));
+    function once(target, fn) {
+      let already = false;
+
+      target.addEventListener('click', () => {
+      if (!already){
+        fn();
+        already = true;
+      }
+    })
+  }
 
 export { addListener, removeListener, skipDefault, emulateClick, delegate, once };
