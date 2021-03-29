@@ -54,25 +54,27 @@ import './cookie.html';
   }
 
 ///Ищет ячейки из столбца, который соответствует имени. Если такое имя есть - меняет его значение на введеное.
+function addValueAfterFilter(filterValue){
+	let nameId = document.querySelectorAll("#tbody__item-name");
+  for (let text of nameId) {
+    if (!text.textContent.includes(filterValue.toLowerCase())) {
+      let nameNone = text.closest(".tbody__item");
+      nameNone.style.display = "none";
 
+    } else if (text.textContent.includes(filterValue.toLowerCase())) {
+      let nameNone = text.closest(".tbody__item");
+      nameNone.style.display = "table-row";
+    }
+  }
+}
+
+let valueStr = "";
 
 filterNameInput.addEventListener('input', function (event) {
   let filterValue = this.value.toLowerCase();
-  let nameId = document.querySelectorAll("#tbody__item-name");
+  valueStr = filterValue;
   
-
-  for( let text of nameId){
-      if(!text.textContent.includes(filterValue.toLowerCase())){
-        let nameNone = text.closest(".tbody__item");
-        nameNone.style.display = "none";
-        
-      }else if(text.textContent.includes(filterValue.toLowerCase())){
-        let nameNone = text.closest(".tbody__item");
-        nameNone.style.display = "table-row";
-      }
-      
-  }
-  
+	addValueAfterFilter(filterValue);
 
 });
 
@@ -93,21 +95,14 @@ addButton.addEventListener('click', (event) => {
       if (elements.textContent == addNameInput.value) {
         elements.nextElementSibling.textContent = addValueInput.value;
         document.cookie = `${name} = ${value}`;
-        addNameInput.value = "";
-        addValueInput.value = "";
         return;
       }
     }
     listTable.appendChild(tbody);
     document.cookie = `${name} = ${value}`;
-    
+    addValueAfterFilter(valueStr);
   }
-  
-  addNameInput.value = "";
-  addValueInput.value = "";
-
 }
-
 );
 
 /// Клик по ячейке "Удалить"
