@@ -57,7 +57,7 @@ import './cookie.html';
 function addValueAfterFilter(filterValue){
 	let nameId = document.querySelectorAll("#tbody__item-name");
   for (let text of nameId) {
-    if (!text.textContent.includes(filterValue.toLowerCase())) {
+    if (!text.textContent.includes(filterValue.toLowerCase()) && !text.nextElementSibling.textContent.includes(filterValue.toLowerCase())) {
       let nameNone = text.closest(".tbody__item");
       nameNone.style.display = "none";
 
