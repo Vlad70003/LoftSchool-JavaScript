@@ -8,50 +8,61 @@ function init() {
     }, {
       searchControlProvider: 'yandex#search'
     });
-    
+
 
   // Слушаем клик на карте.
   myMap.events.add('click', function(e) {
     let coords = e.get('coords');
-  	let form = document.querySelector('#addForm').innerHTML;
-    
-    // Если метка уже создана – просто передвигаем ее.
-    if (myPlacemark) {
-      myBaloon.geometry.setCoordinates(coords, form);
-    }
-    // Если нет – создаем.
-    else {
-      newBaloon = openBaloon(coords, form);
-      
-      myNewMark = createPlacemark(coords, form);
-      
-  
-      myMap.geoObjects.add(myNewMark, coords);
-      /* myMap.geoObjects.add(myBaloon); */
-      
+    let target = e.target;
+    let form = document.querySelector('#addForm').innerHTML;
 
-    }
+    newBaloon = openBaloon(coords, form);
+
+    myNewMark = createPlacemark(coords, form);
+    
+
+    myMap.geoObjects.add(myNewMark, coords);
   });
 
   // Создание метки.
   function createPlacemark(coords, baloon) {
-    let placemark = new ymaps.Placemark(coords, {balloonContentBody: baloon});
+  
+  
+  
+    let placemark = new ymaps.Placemark(coords, {
+      balloonContentBody: baloon
+    });
+
     return placemark;
   }
 
-// Создание балуна
+  // Создание балуна
   function openBaloon(coords, content) {
+
     myMap.balloon.open(coords, content, {
       closeButton: true
     });
-    
-  }
 
-  function setBaloonContent(content) {
-    myMap.balloon.setData(content);
-  }
-
-  function closeBaloon() {
-    myMap.balloon.close();
   }
 }
+
+
+document.body.addEventListener('click', e => {
+    let target = e.target;
+
+    if (target.classList.contains('button')) {
+      let nameValue = document.querySelector('#input-name').value;
+      let placeValue = document.querySelector('#input-place').value;
+      let commentValue = document.querySelector('#input-comm').value;
+      let review = document.querySelector('#review');
+      let personInf = document.createElement('div');
+      let comment = document.createElement('div');
+      personInf.textContent = `${nameValue} ${placeValue}`
+      comment.textContent = commentValue;
+
+      review.append(personInf);
+      review.append(comment);
+
+    }
+  })
+  
