@@ -18,7 +18,7 @@ function init() {
 
     newBaloon = openBaloon(coords, form);
 
-    myNewMark = createPlacemark(coords, form);
+    myNewMark = createPlacemark(coords, createForm('click', form, document.body)());
     
 
     myMap.geoObjects.add(myNewMark, coords);
@@ -46,23 +46,29 @@ function init() {
   }
 }
 
-
-document.body.addEventListener('click', e => {
-    let target = e.target;
-
-    if (target.classList.contains('button')) {
-      let nameValue = document.querySelector('#input-name').value;
+  
+function createForm(event, form, target){
+return function(){
+	target.addEventListener(event, e => {
+  	let targ = e.target;
+  	if(targ.tagName == 'BUTTON'){
+    	let nameValue = document.querySelector('#input-name').value;
       let placeValue = document.querySelector('#input-place').value;
       let commentValue = document.querySelector('#input-comm').value;
       let review = document.querySelector('#review');
       let personInf = document.createElement('div');
       let comment = document.createElement('div');
+      let form = document.querySelector('#addForm').innerHTML;
       personInf.textContent = `${nameValue} ${placeValue}`
       comment.textContent = commentValue;
 
       review.append(personInf);
       review.append(comment);
-
+      review.append(form);
+    
+    return review;
     }
-  })
-  
+    
+  }
+)}
+}
