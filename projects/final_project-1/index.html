@@ -5,13 +5,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="https://api-maps.yandex.ru/2.1/?apikey=662813f1-6b56-430a-add2-319b77761651&lang=ru_RU" type="text/javascript">
-    </script>
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <div id="map" class = "map" style="width: 600px; height: 400px"></div>
+    <div id="map" class="map" style="width: 600px; height: 400px"></div>
 
-    
-    <script src="./script.js"></script>
+
+
+  <script type="addForm" id="addForm">
+    <div class="review"></div>
+<div class="form">
+  <h3>Отзыв:</h3>
+  <div class="input">
+    <input id = "input-name" type="text" placeholder="Укажите Ваше имя">
+  </div>
+  <div class="input">
+    <input id = "input-place" type="text" placeholder="Укажите место">
+  </div>
+  <div class="input">
+    <textarea id = "input-comm" placeholder="Оставьте отзыв" rows="5"></textarea>
+  </div>
+
+  <button id = "button">Добавить</button>
+
+</div>
+
+
+</script>
+
+
+  <script src="https://api-maps.yandex.ru/2.1/?apikey=09bc927e-af87-4e09-9dd6-db8503c3b1a3&lang=ru_RU" type="text/javascript">
+  </script>
+  <script src="./script.js"></script>
 </body>
 </html>

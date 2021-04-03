@@ -1,69 +1,57 @@
 ymaps.ready(init);
 
-
-/// array marks
-let placemarks = [
-{
-  latitude: 59.93,
-  longitude: 30.31,
-  hintContent: '<div class = "">информация</div',
-  balloonContent: [
-    '<div class = "">',
-    '<img class = ""></img>',
-    'Какой то текст',
-    '</div>'
-  ]
-},
-{
-  latitude: 59.93,
-  longitude: 30.35,
-  hintContent: '<div class = "">информация</div',
-  balloonContent: [
-    '<div class = "">',
-    '<img class = ""></img>',
-    'Какой то текст',
-    '</div>'
-  ]
-}]
-
-let geoObjects = [];
-
 function init() {
-///
-  let map = new ymaps.Map('map', {
-    center: [59.93, 30.31],
-    zoom: 12,
-    controls: ["zoomControl"],
-    behaviors: ['drag'],
-  });
-  for ( let i = 0; i < placemarks.length; i++) {
-    geoObjects[i] = new ymaps.Placemark([geoObjects[i].latitude, geoObjects[i].longitude], {
-        ///create hint
-        hintContent: geoObjects[i].hintContent,
-        ///create baloon
-        balloonContent: geoObjects[i].balloonContent.join('')
-      },
-      {
-        iconLayout: 'default#image',
-        iconImageHref: '',
-        iconImageSize: [46, 57],
-        iconImageOffset: [-23, -57],
-        /// position if image is a sprite
-        iconImageClipRect: [[111, 111], [111, 111]],
-      });
-      }
+  var myPlacemark,
+    myMap = new ymaps.Map('map', {
+      center: [55.753994, 37.622093],
+      zoom: 12
+    }, {
+      searchControlProvider: 'yandex#search'
+    });
     
-  let clusterer = new ymaps.Clusterer({
-		clusterIcons: [
-    	{
-      	href: '',
-        size: [100, 100],
-        offset: [-50, -50],
-      }
-    ],
-    clusterIconContentLayout: null,
-  });
-  map.geoObjects.add(clusterer);
-  clusterer.add(placemarks);
+
+  // Слушаем клик на карте.
+  myMap.events.add('click', function(e) {
+    let coords = e.get('coords');
+  	let form = document.querySelector('#addForm').innerHTML;
+    
+    // Если метка уже создана – просто передвигаем ее.
+    if (myPlacemark) {
+      myBaloon.geometry.setCoordinates(coords, form);
+    }
+    // Если нет – создаем.
+    else {
+      newBaloon = openBaloon(coords, form);
+      
+      myNewMark = createPlacemark(coords, form);
+      
   
+      myMap.geoObjects.add(myNewMark, coords);
+      /* myMap.geoObjects.add(myBaloon); */
+      
+
+    }
+  });
+
+  // Создание метки.
+  function createPlacemark(coords, baloon) {
+    let placemark = new ymaps.Placemark(coords, {balloonContentBody: baloon});
+    return placemark;
+  }
+
+// Создание балуна
+  function openBaloon(coords, content) {
+    myMap.balloon.open(coords, content, {
+      closeButton: true
+    });
+    
+  }
+
+  function setBaloonContent(content) {
+    myMap.balloon.setData(content);
+  }
+
+  function closeBaloon() {
+    myMap.balloon.close();
+  }
 }
