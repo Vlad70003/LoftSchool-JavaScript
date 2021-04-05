@@ -13,20 +13,20 @@
 
 
     <script type="addForm" id="addForm">
-        <div id="review"></div>
-    <div class="form">
+        <div id="review-list"></div>
+    <div class="form" data-role="review-form">
       <h3>Отзыв:</h3>
       <div class="input">
-        <input id = "input-name" type="text" placeholder="Укажите Ваше имя">
+        <input data-role="review-name" id = "input-name" type="text" placeholder="Укажите Ваше имя">
       </div>
       <div class="input">
-        <input id = "input-place" type="text" placeholder="Укажите место">
+        <input data-role="review-place" id = "input-place" type="text" placeholder="Укажите место">
       </div>
       <div class="input">
-        <textarea id = "input-comm" placeholder="Оставьте отзыв" rows="5"></textarea>
+        <textarea data-role="review-text" id = "input-comm" placeholder="Оставьте отзыв" rows="5"></textarea>
       </div>
     
-      <button class = "button">Добавить</button>
+      <button class = "button" data-role="review-add">Добавить</button>
     
     </div>
     
