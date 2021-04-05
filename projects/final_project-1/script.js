@@ -30,10 +30,8 @@ function init() {
     
     baloon.openBaloon(coords);
     document.body.addEventListener('click', event => {
-      let target = event.target;
-      
-      if(target.dataset.role == 'review-add'){
-        
+      let target = event.target;    
+      if(target.dataset.role == 'review-add'){ 
         let reviewForm = document.querySelector('[data-role=review-form]');
         let coords = JSON.parse(reviewForm.dataset.coords);
         placemarks.push({
@@ -45,6 +43,7 @@ function init() {
           },
         });
         baloon.createPlacemark(coords);
+        baloon.closeBaloon();
       }
     })
     
@@ -95,13 +94,18 @@ function init() {
    	this.createPlacemark = function(coords) {
       let placemark = new ymaps.Placemark(coords);
     	placemark.events.add('click', event => {
-      	let coords = event.get('coords');
+      	let coords = event.get('target').geometry.getCoordinates();
         this.openBaloon(coords)
       })
       myMap.geoObjects.add(placemark) 
     }
+    
     this.closeBaloon = function(){
+      myMap.balloon.close()
+    }
 
+    this.setBaloonContent = function(content){
+      myMap.balloon.setData(content);
     }
   }
 }
