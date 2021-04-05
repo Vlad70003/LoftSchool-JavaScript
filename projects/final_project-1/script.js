@@ -81,9 +81,9 @@ function init() {
           div.classList.add('review-item');
           div.innerHTML = `
           <div>
-            <b>${item.name}</b> [${item.place}]
+            <b>${item.review.name}</b> [${item.review.place}]
           </div>
-          <div>${item.text}</div>
+          <div>${item.review.text}</div>
           `;
           reviewList.append(div);
         }
