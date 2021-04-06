@@ -50,16 +50,27 @@ function init() {
     if (target.dataset.role == 'review-add') {
       let reviewForm = document.querySelector('[data-role=review-form]');
       let coords = JSON.parse(reviewForm.dataset.coords);
-      placemarks.push({
-        coords,
-        review: {
-          name: document.querySelector('[data-role=review-name]').value,
-          place: document.querySelector('[data-role=review-place]').value,
-          text: document.querySelector('[data-role=review-text]').value,
-        },
-      });
+      let nameValue = document.querySelector('[data-role=review-name]').value;
+      let placeValue = document.querySelector('[data-role=review-place]').value;
+      let textValue = document.querySelector('[data-role=review-text]').value;
+      try{if(nameValue.length > 0 && placeValue > 0 && textValue > 0){
+        placemarks.push({
+          coords,
+          review: {
+            name: document.querySelector('[data-role=review-name]').value,
+            place: document.querySelector('[data-role=review-place]').value,
+            text: document.querySelector('[data-role=review-text]').value,
+          },
+        });
+        baloon.createPlacemark(coords);
+      }else{
+        throw new Error('Все поля должны быть заполнены');
+      }}catch(e){
+        alert(e.message);
+      }
+      
       baloon.closeBaloon();
-      baloon.createPlacemark(coords);
+      
 
     }
   })
