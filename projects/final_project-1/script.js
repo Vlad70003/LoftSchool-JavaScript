@@ -40,6 +40,11 @@ function init() {
   ///Доступ к конструктору
   let baloon = new Baloon();
 
+  for(let i = 0; i < storage.length; i++) {
+    let returnStorage = JSON.parse(storage[i]);
+    baloon.createPlacemark(returnStorage[0]);
+}
+
   ///Получаем доступ к форме
   let form = document.querySelector('#addForm').innerHTML;
 
@@ -50,6 +55,8 @@ function init() {
 
 
     baloon.openBaloon(coords);
+
+    
 
   });
 
