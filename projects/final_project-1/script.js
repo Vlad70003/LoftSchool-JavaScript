@@ -36,6 +36,10 @@ function init() {
 
   myMap.geoObjects.add(clusterer);
 
+  var fullscreenControl = new ymaps.control.FullscreenControl();
+  myMap.controls.add(fullscreenControl);
+  fullscreenControl.enterFullscreen();
+
 
   ///Доступ к конструктору
   let baloon = new Baloon();
