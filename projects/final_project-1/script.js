@@ -2,6 +2,13 @@ ymaps.ready(init);
 
 let map = document.querySelector('#map');
 let geoObjects = [];
+let storage = localStorage;
+
+
+storage.index = localStorage.getItem('index') || '0';
+
+    
+
 
 /// Массив для хранения информации о плейсмарках
 let placemarks = [];
@@ -53,22 +60,25 @@ function init() {
       let nameValue = document.querySelector('[data-role=review-name]').value;
       let placeValue = document.querySelector('[data-role=review-place]').value;
       let textValue = document.querySelector('[data-role=review-text]').value;
-      try{if(nameValue.length > 0 && placeValue > 0 && textValue > 0){
-        placemarks.push({
-          coords,
-          review: {
-            name: document.querySelector('[data-role=review-name]').value,
-            place: document.querySelector('[data-role=review-place]').value,
-            text: document.querySelector('[data-role=review-text]').value,
-          },
-        });
+      try{if(nameValue.length > 0 && placeValue.length > 0 && textValue.length > 0){
+      let geoObject = new ymaps.Placemark(coords);
+      geoObjects.push(geoObject)
+      
+      ///index
+        storage[storage.index++] = JSON.stringify([
+        		coords,
+            document.querySelector('[data-role=review-name]').value,
+            document.querySelector('[data-role=review-place]').value,
+            document.querySelector('[data-role=review-text]').value,
+
+        ]);
         baloon.createPlacemark(coords);
       }else{
         throw new Error('Все поля должны быть заполнены');
       }}catch(e){
         alert(e.message);
       }
-      
+      console.log(storage.index);
       baloon.closeBaloon();
       
 
@@ -94,17 +104,20 @@ function init() {
       let reviewList = newForm.querySelector('#review-list');
       let reviewForm = newForm.querySelector('[data-role=review-form]');
       reviewForm.dataset.coords = JSON.stringify(coords);
-
-      for (let i = 0; i < placemarks.length; i++) {
-        geoObjects[i] = new ymaps.Placemark(placemarks[i].coords);
-        if (placemarks[i].coords[0] == coords[0] && placemarks[i].coords[1] == coords[1]) {
-          let div = document.createElement('div');
+			
+      for (let i = 0; i < storage.length; i++) {
+        let key = storage.key(i);
+        
+        let numberOfKey = JSON.parse(storage.getItem(key));
+          
+        if (String(numberOfKey[0]) == coords) {
+        let div = document.createElement('div');
           div.classList.add('review-item');
           div.innerHTML = `
           <div>
-            <b>${placemarks[i].review.name}</b> [${placemarks[i].review.place}]
+            <b>${numberOfKey[1]}</b> [${numberOfKey[2]}]
           </div>
-          <div>${placemarks[i].review.text}</div>
+          <div>${numberOfKey[3]}</div>
           `;
           reviewList.append(div);
         }
