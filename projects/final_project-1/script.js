@@ -5,7 +5,7 @@ let geoObjects = [];
 let storage = localStorage;
 
 
-storage.index = localStorage.getItem('index') || '0';
+let index = storage.length || '0';
 
     
 
@@ -65,7 +65,7 @@ function init() {
       geoObjects.push(geoObject)
       
       ///index
-        storage[storage.index++] = JSON.stringify([
+        storage[index++] = JSON.stringify([
         		coords,
             document.querySelector('[data-role=review-name]').value,
             document.querySelector('[data-role=review-place]').value,
