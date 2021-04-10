@@ -7,6 +7,9 @@ input, textarea{
     resize: none;
     box-sizing: border-box;
   }
+  input[id*="input"]::placeholder,textarea[id*="input"]::placeholder{
+  color: black;
+}
   form{
     max-height: 100px;
   }
