@@ -106,7 +106,7 @@ function init() {
         var newContent = res.geoObjects.get(0).properties.get('name');
         myMap.balloon.open(coords, {
           contentHeader: newContent,
-          contentBody: newForm.innerHTML
+          contentBody: newForm.innerHTML,
         });
     })
       
@@ -132,9 +132,10 @@ function init() {
           div.classList.add('review-item');
           div.innerHTML = `
           <div>
-            <b>${numberOfKey[1]}</b> [${numberOfKey[2]}]
+            <span id = "name-style">${numberOfKey[1]}</span> <span id = "place-style"
+            >${numberOfKey[2]}</span>
           </div>
-          <div>${numberOfKey[3]}</div>
+          <div id = "text-style">${numberOfKey[3]}</div>
           `;
           reviewList.append(div);
         }
