@@ -61,11 +61,7 @@ function init() {
   myMap.events.add('click', function (e) {
     let coords = e.get('coords');
 
-    let adress = ymaps.geocode(coords).then(function (res) {
-      var newContent = res.geoObjects.get(0).properties.get('name');
-      return newContent;
-  });
-    baloon.openBaloon(coords, adress);
+    baloon.openBaloon(coords);
     
   });
 
@@ -101,14 +97,19 @@ function init() {
 
   function Baloon() {
 
-    this.openBaloon = function (coords, adress) {
+    this.openBaloon = function (coords) {
       let newForm = this.createForm(coords, placemarks);
       this.setBaloonContent(newForm.innerHTML);
 
-      myMap.balloon.open(coords, {
-        contentHeader: adress,
-        contentBody: newForm.innerHTML
-      });
+      ///Добавляем адрес в шапку балуна
+      let addres = ymaps.geocode(coords).then(function (res) {
+        var newContent = res.geoObjects.get(0).properties.get('name');
+        myMap.balloon.open(coords, {
+          contentHeader: newContent,
+          contentBody: newForm.innerHTML
+        });
+    })
+      
     }
 
     
