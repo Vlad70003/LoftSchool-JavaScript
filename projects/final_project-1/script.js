@@ -61,7 +61,11 @@ function init() {
   myMap.events.add('click', function (e) {
     let coords = e.get('coords');
 
-    baloon.openBaloon(coords);
+    let adress = ymaps.geocode(coords).then(function (res) {
+      var newContent = res.geoObjects.get(0).properties.get('name');
+      return newContent;
+  });
+    baloon.openBaloon(coords, adress);
     
   });
 
@@ -97,24 +101,17 @@ function init() {
 
   function Baloon() {
 
-    this.openBaloon = function (coords) {
+    this.openBaloon = function (coords, adress) {
       let newForm = this.createForm(coords, placemarks);
       this.setBaloonContent(newForm.innerHTML);
-      myMap.balloon.open(coords, {
-        balloonContentHeader: ymaps.geocode(coords, {
-          
-      }).then(function (res) {
-          var newContent = res.geoObjects.get(0) ?
-                  res.geoObjects.get(0).properties.get('name') :
-                  'Не удалось определить адрес.';
 
-          // Задаем новое содержимое балуна в соответствующее свойство метки.
-          placemark.properties.set('balloonContentHeader', newContent);
-      }),
+      myMap.balloon.open(coords, {
+        contentHeader: adress,
         contentBody: newForm.innerHTML
       });
-    };
+    }
 
+    
     this.createForm = function (coords, placemarks) {
 
       let newForm = document.createElement('div');
@@ -161,27 +158,6 @@ function init() {
     this.setBaloonContent = function (content) {
       myMap.balloon.setData(content);
     }
-
-      // ///Получаем координаты
-      // this.getAddress = function (coords) {
-      //   placemark.properties.set('iconCaption', 'поиск...');
-      //   ymaps.geocode(coords).then(function (res) {
-      //       var firstGeoObject = res.geoObjects.get(0);
-  
-      //       placemark.properties
-      //           .set({
-      //               // Формируем строку с данными об объекте.
-      //               iconCaption: [
-      //                   // Название населенного пункта или вышестоящее  административно-территориальное образование.
-      //                   firstGeoObject.getLocalities().length ? firstGeoObject.getLocalities() :  firstGeoObject.getAdministrativeAreas(),
-      //                   // Получаем путь до топонима, если метод вернул null, запрашиваем   наименование здания.
-      //                   firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
-      //               ].filter(Boolean).join(', '),
-      //               // В качестве контента балуна задаем строку с адресом объекта.
-      //               balloonContentHeader: firstGeoObject.getAddressLine()
-      //           });
-      //   });
-      // }
 
   }
 }
