@@ -15,27 +15,31 @@ let index = storage.length || '0';
 let placemarks = [];
 
 function init() {
-  let myMap = new ymaps.Map('map', {
+  ///Центр карты
+  let placemark,
+  myMap = new ymaps.Map('map', {
     center: [55.753994, 37.622093],
     zoom: 12
   }, {
     searchControlProvider: 'yandex#search'
   });
-
+///Кластер
   let clusterer = new ymaps.Clusterer({
     preset: 'islands#invertedVioletClusterIcons',
     groupByCoordinates: true,
     clusterDisableClickZoom: true,
     clusterOpenBalloonOnClick: false,
   });
-
+///Клик по кластеру
   clusterer.events.add('click', event => {
     let coords = event.get('target').geometry.getCoordinates();
     baloon.openBaloon(coords)
   })
 
-  myMap.geoObjects.add(clusterer);
 
+
+  myMap.geoObjects.add(clusterer);
+///Карта на весь экран
   var fullscreenControl = new ymaps.control.FullscreenControl();
   myMap.controls.add(fullscreenControl);
   fullscreenControl.enterFullscreen();
@@ -43,7 +47,7 @@ function init() {
 
   ///Доступ к конструктору
   let baloon = new Baloon();
-
+///Создание меток из LocalStorage
   for(let i = 0; i < storage.length; i++) {
     let returnStorage = JSON.parse(storage[i]);
     baloon.createPlacemark(returnStorage[0]);
@@ -57,11 +61,8 @@ function init() {
   myMap.events.add('click', function (e) {
     let coords = e.get('coords');
 
-
     baloon.openBaloon(coords);
-
     
-
   });
 
   document.body.addEventListener('click', event => {
@@ -79,9 +80,9 @@ function init() {
       ///index
         storage[index++] = JSON.stringify([
         		coords,
-            document.querySelector('[data-role=review-name]').value,
-            document.querySelector('[data-role=review-place]').value,
-            document.querySelector('[data-role=review-text]').value,
+            nameValue,
+            placeValue,
+            textValue,
 
         ]);
         baloon.createPlacemark(coords);
@@ -90,33 +91,30 @@ function init() {
       }}catch(e){
         alert(e.message);
       }
-      console.log(storage.index);
       baloon.closeBaloon();
-      
-
     }
   })
 
   function Baloon() {
 
-
     this.openBaloon = function (coords) {
       let newForm = this.createForm(coords, placemarks);
       this.setBaloonContent(newForm.innerHTML);
-      myMap.balloon.open(coords, newForm.innerHTML, {
-        closeButton: true
+      myMap.balloon.open(coords, {
+        contentHeader: "ТУТ ДОЛЖЕН БЫТЬ АДРЕС",
+        contentBody: newForm.innerHTML
       });
     };
-
 
     this.createForm = function (coords, placemarks) {
 
       let newForm = document.createElement('div');
       newForm.innerHTML = form;
+      let reviewAdress = newForm.querySelector('#adress');
       let reviewList = newForm.querySelector('#review-list');
       let reviewForm = newForm.querySelector('[data-role=review-form]');
       reviewForm.dataset.coords = JSON.stringify(coords);
-			
+      
       for (let i = 0; i < storage.length; i++) {
         let key = storage.key(i);
         
@@ -154,6 +152,27 @@ function init() {
     this.setBaloonContent = function (content) {
       myMap.balloon.setData(content);
     }
+
+      ///Получаем координаты
+    this.getAddress = function (coords) {
+      placemark.properties.set('iconCaption', 'поиск...');
+      ymaps.geocode(coords).then(function (res) {
+          var firstGeoObject = res.geoObjects.get(0);
+
+          placemark.properties
+              .set({
+                  // Формируем строку с данными об объекте.
+                  iconCaption: [
+                      // Название населенного пункта или вышестоящее  административно-территориальное образование.
+                      firstGeoObject.getLocalities().length ? firstGeoObject.getLocalities() :  firstGeoObject.getAdministrativeAreas(),
+                      // Получаем путь до топонима, если метод вернул null, запрашиваем   наименование здания.
+                      firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
+                  ].filter(Boolean).join(', '),
+                  // В качестве контента балуна задаем строку с адресом объекта.
+                  balloonContentHeader: firstGeoObject.getAddressLine()
+              });
+      });
+    } 
 
   }
 }
