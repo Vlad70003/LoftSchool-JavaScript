@@ -4,6 +4,8 @@ let name = document.querySelector('#name');
 let nickname = document.querySelector("#nickname");
 let button = document.querySelector("#button-autorization");
 let chatList = document.querySelector(".left-side__list");
+let hamburger = document.querySelector(".hamburger__conteiner");
+let clickTimeout = false;
 let chatAction = new Chat();
 
 document.addEventListener('click', event => {
@@ -14,7 +16,7 @@ document.addEventListener('click', event => {
         try{if(name.value.length > 0 && nickname.value.length > 0){
             users.push({name: name.value, nickname:nickname.value});
             let windowAutorization = target.closest('.visible');
-            chatAction.addChatPerson(name.value, nickname.value);
+            chatAction.addChatPerson();
 
             if(windowAutorization.classList){
                 windowAutorization.classList.toggle("hide");
@@ -27,14 +29,27 @@ document.addEventListener('click', event => {
         }
     }
 
-    
+    ///Реализуем гамбергер
+    if((target ==  hamburger || target ==  hamburger.querySelector(".hamburger")) && clickTimeout == false){
+        clickTimeout = true;
+        chatList.classList.toggle("opacity");    
+        let timeout = setTimeout(function(){
+            clickTimeout = false;
+        }, 1000)
+        timeout;
+    }
+
+
+
 })
 
 function Chat(){
 
-    this.addChatPerson = function(name, nickname){
-        let newPerson = this.createPerson(name, nickname);
-        chatList.append(newPerson);
+    this.addChatPerson = function(){
+        for(user of users){
+            let newPerson = this.createPerson(user.name, user.nickname);
+            chatList.append(newPerson);
+        }
     }
 
     this.createPerson = function(name, nickname){

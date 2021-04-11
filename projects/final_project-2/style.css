@@ -207,8 +207,13 @@ html, body{
 
 /* Доп классы */
 .hide{
-    display: none;
+    transform: translateY(-2000px);
+    transition: all 1s;
 }
 .visible{
     display: flex;
+}
+.opacity{
+    opacity: 0;
+    transition: all 1s;
 }
