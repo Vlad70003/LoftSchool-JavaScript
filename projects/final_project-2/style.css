@@ -150,7 +150,8 @@ html, body{
     height: 50px;
     display: block;
     border-radius: 50%;
-    background: grey;
+    background: url(./image/cat.jpg) center no-repeat;
+    background-size: contain;
 }
 .person-information{
     padding: 0 10px;
