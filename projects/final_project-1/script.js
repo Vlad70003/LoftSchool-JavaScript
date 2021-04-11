@@ -23,17 +23,37 @@ function init() {
   }, {
     searchControlProvider: 'yandex#search'
   });
+
+  var customItemContentLayout = ymaps.templateLayoutFactory.createClass(
+    // Флаг "raw" означает, что данные вставляют "как есть" без экранирования html.
+    '<h2 class=ballon_header>{{ properties.balloonContentHeader|raw }}</h2>' +
+        '<div class=ballon_body>{{ baloon.createForm|raw }}</div>' +
+        '<div class=ballon_footer>{{ properties.balloonContentFooter|raw }}</div>'
+);
   ///Кластер
   let clusterer = new ymaps.Clusterer({
-    preset: 'islands#invertedVioletClusterIcons',
-    groupByCoordinates: true,
+    // preset: 'islands#invertedVioletClusterIcons',
+    // groupByCoordinates: true,
+    // clusterDisableClickZoom: true,
+    // clusterOpenBalloonOnClick: true,
+    // clusterBalloonContentLayout: 'cluster#balloonCarousel',
+    // clusterBalloonPanelMaxMapArea: 0,
+    // clusterBalloonContentLayoutWidth: 200,
+    // clusterBalloonContentLayoutHeight: 130,
+    clusterBalloonItemContentLayout: customItemContentLayout,
     clusterDisableClickZoom: true,
-    clusterOpenBalloonOnClick: false,
+    clusterOpenBalloonOnClick: true,
+    clusterBalloonContentLayout: 'cluster#balloonCarousel',
+    clusterBalloonPanelMaxMapArea: 0,
+    clusterBalloonContentLayoutWidth: 200,
+    clusterBalloonContentLayoutHeight: 130,
+    clusterBalloonPagerSize: 5
+
   });
   ///Клик по кластеру
   clusterer.events.add('click', event => {
     let coords = event.get('target').geometry.getCoordinates();
-    baloon.openBaloon(coords)
+    // baloon.openBaloon(coords)
   })
 
 
