@@ -3,10 +3,17 @@
     list-style: none;
     margin: 0;
     padding: 0;
-
+    font-family: 'Ubuntu', sans-serif;
 }
-
+html, body{
+    width: 100%;
+    height: 100%;
+}
+/* Окно авторизации */
 .window-autorization{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: fixed;
     top: 0;
     right: 0;
@@ -23,38 +30,184 @@
 }
 .window-autorization__conteiner{
     background: #17212B;
+    padding: 15px 50px;
     width: 450px;
     height: 500px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    align-items: center;
+}
+.chat-logotype{
+    width: 140px;
+    height: 140px;
+    background: url(./image/main-logo.png) center no-repeat;
+}
+.window-autorization__title{
+    color: white;
+    font-size: 24px;
+    font-weight: 500;
+
+}
+.window-autorization__text{
+    font-weight: 400;
+    font-size: 16px;
+    color: #7F91A4;
+    text-align: center;
+}
+.window-autorization_input, .input-message{
+    border: none;
+    outline: none;
+    width: 300px;
+    color: white;
+    size: 16px;
+    padding: 10px 0;
+    background: #17212B;
+}
+.window-autorization_input::placeholder , .input-message::placeholder{
+    color: #858F98;
+}
+.button{
+    padding: 13px 40px;
+    color: white;
+    text-transform: uppercase;
+    background: #5188C1;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.line{
+    width: 300px;
+    height: 1px;
+    background: #465461;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* Окно чата */
 
 .main-window{
+    display: flex;
+    height: 100%;
+    background: #0E1621;
+}
+.left-side{
+    background: #17212B;
+    width: 25%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end; 
+}
+.left-side__conteiner{
+    width: 300px;
+    height: 100%;
+    padding: 30px 0;
+}
+.left-side__header{
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+.hamburger__conteiner{
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+}
+.hamburger{
+    width: 18px;
+    height: 2px;
+    background: #6C7982;
+    position: relative;
+}
+.hamburger::after{
+    content: '';
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: #6C7982;
+    position: absolute;
+    top: 6px;
+}
+.hamburger::before{
+    content: '';
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: #6C7982;
+    position: absolute;
+    top: -6px;
+}
+.left-side__item{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin: 10px 0;
+}
+.avatar{
+    width: 50px;
+    height: 50px;
+    display: block;
+    border-radius: 50%;
+    background: grey;
+}
+.person-information{
+    padding: 0 10px;
+}
+.person-information__name{
+    font-weight: 500;
+    size: 14px;
+    color: #5387C1;
+}
+.person-information__nikname{
+    font-weight: 300;
+    size: 14px;
+    color: #7F91A4;
+}
+.right-side{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.right-side__header, .right-side__footer{
+    height: 56px;
+    width: 100%;
+    padding-left: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    background: #17212B;
+    margin-left: 2px;
+}
+.chat-disc{
+    font-weight: 300;
+    size: 14px;
+    color: white;
+}
+.number-entries{
+    font-weight: 300;
+    size: 12px;
+    color: #7F91A4;
+}
+.input-message-width{
+    width: 100%;
+}
+.footer-position{
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 50px;
+}
+#message-errors{
+    color: red;
+}
+
+/* Доп классы */
+.hide{
     display: none;
+}
+.visible{
+    display: flex;
 }

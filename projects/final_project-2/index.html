@@ -6,34 +6,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Чат</title>
     <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="window-autorization">
+    <div class="window-autorization visible" id="window-autorization">
         <div class="window-autorization__conteiner">
             <span class="chat-logotype"></span>
-            <h4 class="window-autorization__title"></h4>
-            <p class="window-autorization__text"></p>
-            <input type="text" class = "input-name" placeholder="Введите свое ФИО">
-            <input type="text" class = "input-nikname" placeholder="Введите свой ник">
-            <button class="button">Войти</button>
+            <h4 class="window-autorization__title">Авторизация</h4>
+            <p class="window-autorization__text">Введите пожалуйста свой ник для дальнейшей авторизации</p>
+            <input type="text" id="name" class = "window-autorization_input" placeholder="Введите свое ФИО">
+            <input type="text" id="nickname" class = "window-autorization_input" placeholder="Введите свой ник">
+            <span class="line"></span>
+            <button id="button-autorization" class="button">Войти</button>
+            <div id="message-errors"></div>
         </div>
     </div>
     <div class="main-window">
         <div class="left-side">
-            <header class="left-side__header">
-                <div class="hamburger"></div>
-            </header>
-            <section class="left-side__main">
-                <ul class="left-side__list">
-                    <li class="left-side__item">
-                        <span class="avatar"></span>
-                        <div class="person-information">
-                            <div class="person-information__name">Влад П</div>
-                            <div class="person-information__nikname">Vlad70003</div>
+                <div class="left-side__conteiner">
+                    <header class="left-side__header">
+                        <div class="hamburger__conteiner">
+                            <div class="hamburger"></div>
                         </div>
-                    </li>
-                </ul>
-            </section>
+                    </header>
+                    <section class="left-side__main">
+                        <ul class="left-side__list">
+                            <li class="left-side__item">
+                                <span class="avatar"></span>
+                                <div class="person-information">
+                                    <div class="person-information__name">Влад П</div>
+                                    <div class="person-information__nikname">Vlad70003</div>
+                                </div>
+                            </li>
+                            <li class="left-side__item">
+                                <span class="avatar"></span>
+                                <div class="person-information">
+                                    <div class="person-information__name">Иван И</div>
+                                    <div class="person-information__nikname">Ivan434</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
         </div>
 
         <div class="right-side">
@@ -42,16 +57,17 @@
                     <h3 class="chat-disc">Чат</h3>
                     <p class="number-entries">2 участника</p>
                 </div>
-            </header>>
+            </header>
             <section class="chat">
 
             </section>
-            <footer class="right-side__footer">
-                <input type="text" class="input-message">
-                <button class="button">Отправить</button>
+            <footer class="right-side__footer footer-position">
+                <input type="text" class="input-message input-message-width" placeholder="Введите сообщение...">
+                <button class="button button__massage">Отправить</button>
             </footer>
         </div>
     </div>
 
+    <script src="./script.js"></script>
 </body>
 </html>
