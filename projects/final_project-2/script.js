@@ -1,32 +1,77 @@
+import WSClient from "./wsClient";
+
+
 let users = [];
 
 let name = document.querySelector('#name');
 let nickname = document.querySelector("#nickname");
-let button = document.querySelector("#button-autorization");
+let buttonAut = document.querySelector("#button-autorization");
+let buttonMessage = document.querySelector(".button__massage");
+let message = document.querySelector(".input-message");
 let chatList = document.querySelector(".left-side__list");
+let messageList = document.querySelector(".chat__list")
 let hamburger = document.querySelector(".hamburger__conteiner");
+let numberEntry = document.querySelector(".number-entries");
 let clickTimeout = false;
 let chatAction = new Chat();
+
+///Подключаемся к серверу
+class MegaChat {
+ 	constructor(){
+   	this.wsClient = new WSClient(
+     `ws://${location.host}/mega-chat/ws`),
+     this.onMessage.bind(this)
+   }
+   onMessage({type, from, data}){
+   	if(type == 'hello'){
+             
+     }else if(type == 'user-list'){ 
+
+     }else if(type == 'bye-bye'){  
+
+     }else if(type == 'text-message'){ 
+
+     }  
+   }
+ }
+
+let megaChat = new MegaChat();
+
 
 document.addEventListener('click', event => {
     let target = event.target;
 
     ///Нажимаем на кнопку и пушим данные в users
-    if(target == button){
-        try{if(name.value.length > 0 && nickname.value.length > 0){
+    if(target == buttonAut){
+        try{if(name.value.trim().length > 0 && nickname.value.trim().length > 0){
+        		
+            ///Соединение с сервером
+            megaChat.wsClient.connect();
+            megaChat.wsClient.sendHello(name);
+            
             users.push({name: name.value, nickname:nickname.value});
             let windowAutorization = target.closest('.visible');
-            chatAction.addChatPerson();
+            chatAction.addChatPerson(users);
+            numberEntry.textContent = `${users.length} участника`
 
             if(windowAutorization.classList){
                 windowAutorization.classList.toggle("hide");
-                windowAutorization.classList.toggle("visible");
             }
         }else{
             throw new SyntaxError("Пожалуйста, заполните все поля");
         }}catch(e){
             target.nextElementSibling.textContent = e.message;
         }
+    }
+    
+    ///Клик по кнопке отправить
+		if(target == buttonMessage){
+    	try{if(message.value.trim().length > 0){
+      	let newMessage = chatAction.addMessage(message);
+        messageList.append(newMessage);
+        message.value = "";
+      }}catch(e){     	
+      }
     }
 
     ///Реализуем гамбергер
@@ -35,20 +80,17 @@ document.addEventListener('click', event => {
         chatList.classList.toggle("opacity");    
         let timeout = setTimeout(function(){
             clickTimeout = false;
-        }, 1000)
-        timeout;
+        }, 1000)        
     }
-
-
-
 })
 
 function Chat(){
 
-    this.addChatPerson = function(){
-        for(user of users){
+    this.addChatPerson = function(users){
+        for(let user of users){
             let newPerson = this.createPerson(user.name, user.nickname);
             chatList.append(newPerson);
+            
         }
     }
 
@@ -75,7 +117,15 @@ function Chat(){
 
         person.append(avatar);
         person.append(personInformation);
+        
 
         return person;
+    }
+    
+    this.addMessage = function(message){
+    	let newMessage = document.createElement('li');
+      newMessage.classList.add('chat__item');
+      newMessage.textContent = message.value;
+      return newMessage;
     }
 }

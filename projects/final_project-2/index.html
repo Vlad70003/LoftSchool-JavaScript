@@ -25,7 +25,7 @@
     <div class="main-window">
         <div class="left-side">
                 <div class="left-side__conteiner">
-                    <header class="left-side__header">
+                    <header class="left-side__header">                    
                         <div class="hamburger__conteiner">
                             <div class="hamburger"></div>
                         </div>
@@ -42,11 +42,13 @@
             <header class="right-side__header">
                 <div class="chat-information">
                     <h3 class="chat-disc">Чат</h3>
-                    <p class="number-entries">2 участника</p>
+                    <p class="number-entries"></p>
                 </div>
             </header>
             <section class="chat">
-
+              <ul class="chat__list">
+                 <!-- Сообщения в чате  -->
+              </ul>
             </section>
             <footer class="right-side__footer footer-position">
                 <input type="text" class="input-message input-message-width" placeholder="Введите сообщение...">
@@ -56,5 +58,6 @@
     </div>
 
     <script src="./script.js"></script>
+    <script src="./wsClient.js"></script>
 </body>
 </html>
