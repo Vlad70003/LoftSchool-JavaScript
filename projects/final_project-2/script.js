@@ -1,6 +1,3 @@
-import WSClient from "./wsClient";
-
-
 let users = [];
 
 let name = document.querySelector('#name');
@@ -15,7 +12,40 @@ let numberEntry = document.querySelector(".number-entries");
 let clickTimeout = false;
 let chatAction = new Chat();
 
-///Подключаемся к серверу
+///Обрабатываем входящие файлы
+class WSClient {
+    constructor(url, onMessage){
+        this.url = url;
+        this.onMessage = onMessage;
+    }
+
+    connect(){
+        return new Promise((resolve) => {
+            this.socket = new WebSocket(this.url);
+            this.socket.addEventListener('open', resolve);
+            this.socket.addEventListener('message', (e) => {
+                this.onMessage(JSON.parse(e.data));
+            });
+        });
+    }
+
+    sendHello(name){
+        this.sendMessage('hello', {name});
+    }
+    
+    sendTextMessage(message){
+        this.sendMessage('text-message', {message});
+    }
+
+    sendMessage(type, data){
+        this.socket.send(JSON.stringify(
+            type,
+            data,
+        ))
+    }
+}
+
+///Обрабатываем входящие пакеты
 class MegaChat {
  	constructor(){
    	this.wsClient = new WSClient(
@@ -24,7 +54,7 @@ class MegaChat {
    }
    onMessage({type, from, data}){
    	if(type == 'hello'){
-             
+
      }else if(type == 'user-list'){ 
 
      }else if(type == 'bye-bye'){  
@@ -35,8 +65,9 @@ class MegaChat {
    }
  }
 
-let megaChat = new MegaChat();
 
+let wsClient = new WSClient();
+let megaChat = new MegaChat();
 
 document.addEventListener('click', event => {
     let target = event.target;
